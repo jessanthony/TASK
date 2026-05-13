@@ -1,4 +1,4 @@
-import { addTask } from '@/lib/database';
+import { addTask, TaskStatus } from '@/lib/database';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable, Alert, ScrollView } from 'react-native';
@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function AddTaskScreen() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [status, setStatus] = useState('Pending');
+  const [status, setStatus] = useState<TaskStatus>('Pending');
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
@@ -66,7 +66,7 @@ export default function AddTaskScreen() {
 
       <Text style={styles.label}>Status</Text>
       <View style={styles.statusContainer}>
-        {['Pending', 'In Progress', 'Completed'].map((s) => (
+        {(['Pending', 'In Progress', 'Completed'] as const).map((s) => (
           <Pressable
             key={s}
             style={[styles.statusButton, status === s && styles.statusButtonActive]}
